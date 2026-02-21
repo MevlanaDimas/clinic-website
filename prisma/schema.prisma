@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  News News[]
+}
+
+model DoctorPracticeSchedule {
+  id          Int     @id @default(autoincrement())
+  doctorId    String
+  day         String
+  endTime     String
+  isAvailable Boolean @default(true)
+  startTime   String
+  Staff       Staff   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@index([doctorId])
+}
+
+model News {
+  id                           String         @id
+  title                        String         @db.VarChar(255)
+  slug                         String         @unique
+  content                      String
+  summary                      String?        @db.VarChar(500)
+  categoryId                   Int
+  tags                         String[]
+  evidenceLevel                EvidenceLevel?
+  status                       Status         @default(DRAFT)
+  publishedAt                  DateTime?
+  createdAt                    DateTime       @default(now())
+  updatedAt                    DateTime
+  authorId                     String
+  reviewerId                   String?
+  sourceLinks                  String[]
+  viewCount                    Int            @default(0)
+  targetAudience               Audience       @default(GENERAL_PUBLIC)
+  Staff_News_authorIdToStaff   Staff          @relation("News_authorIdToStaff", fields: [authorId], references: [id])
+  Category                     Category       @relation(fields: [categoryId], references: [id])
+  Staff_News_reviewerIdToStaff Staff?         @relation("News_reviewerIdToStaff", fields: [reviewerId], references: [id])
+  NewsImages                   NewsImages[]
+
+  @@index([status, publishedAt])
+}
+
+model NewsImages {
+  id        Int      @id @default(autoincrement())
+  newsId    String
+  imageUrl  String
+  imageName String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  News      News     @relation(fields: [newsId], references: [id], onDelete: Cascade)
+
+  @@index([newsId])
+}
+
+model Promo {
+  id          Int          @id @default(autoincrement())
+  code        String       @unique @db.VarChar(10)
+  description String       @db.VarChar(130)
+  category    String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime
+  validUntil  DateTime
+  CTA         String       @db.VarChar(40)
+  headline    String       @db.VarChar(30)
+  PromoImages PromoImages?
+}
+
+model PromoImages {
+  id        Int      @id @default(autoincrement())
+  promoId   Int      @unique
+  imageUrl  String
+  imageName String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  Promo     Promo    @relation(fields: [promoId], references: [id], onDelete: Cascade)
+
+  @@index([promoId])
+}
+
+model QueueTicket {
+  id            String         @id
+  tokenNumber   Int            @default(autoincrement())
+  status        QueueStatus    @default(WAITING)
+  counterNumber CounterNumber?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime
+
+  @@index([status])
+}
+
+model RoleRequest {
+  id            String        @id
+  staffId       String
+  requestedRole StaffTitle    @default(Staff)
+  status        RequestStatus @default(PENDING)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime
+  Staff         Staff         @relation(fields: [staffId], references: [id])
+
+  @@index([staffId])
+}
+
+model Staff {
+  id                          String                   @id
+  name                        String                   @default("Staff")
+  bio                         String?
+  title                       StaffTitle               @default(Staff)
+  email                       String                   @unique
+  username                    String                   @unique
+  DoctorPracticeSchedule      DoctorPracticeSchedule[]
+  News_News_authorIdToStaff   News[]                   @relation("News_authorIdToStaff")
+  News_News_reviewerIdToStaff News[]                   @relation("News_reviewerIdToStaff")
+  RoleRequest                 RoleRequest[]
+}
+
+enum Audience {
+  PATIENT
+  GENERAL_PUBLIC
+  MEDICAL_PROFESSIONAL
+  INTERNAL_STAFF
+}
+
+enum CounterNumber {
+  ONE
+  TWO
+}
+
+enum EvidenceLevel {
+  META_ANALYSIS
+  RANDOMIZED_CONTROL
+  OBSERVATIONAL
+  EXPERT_OPINION
+}
+
+enum QueueStatus {
+  WAITING
+  CALLING
+  DONE
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum StaffTitle {
+  Staff
+  Doctor
+  Admin
+}
+
+enum Status {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
