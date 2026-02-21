@@ -14,6 +14,7 @@ On the backend, the system is powered by a robust architecture using **Neon DB (
 - **Doctor Schedules**: View doctor practice schedules to plan visits.
 - **Appointments**: Make appointments directly via WhatsApp integration.
 - **Contact**: Send messages to clinic staff via email (powered by Resend) and WhatsApp.
+- **Analytics**: Integrated with Vercel Analytics and Google Analytics for tracking user interactions and performance.
 
 ## Tech Stack
 
@@ -23,6 +24,7 @@ On the backend, the system is powered by a robust architecture using **Neon DB (
 - **Authentication & User Management**: Clerk (Used for fetching doctor avatar data)
 - **Storage**: Google Cloud Storage (For news and promotion images)
 - **Email**: Resend
+- **Analytics**: Vercel Analytics, Google Analytics
 
 ## Database Schema
 
