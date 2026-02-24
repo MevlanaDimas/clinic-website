@@ -6,6 +6,7 @@ import "./globals.css";
 import PageTransition from '@/components/Animations/PageTransition';
 import GoogleAnalyticsTracker from "@/components/GoogleAnalyticsTracker"; // Import the new tracker
 import ClientWidgetWrapper from "@/components/Widget";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,6 +42,8 @@ export default function RootLayout({
             {children}
           </PageTransition>
           <ClientWidgetWrapper />
+
+          <SpeedInsights />
           
           <Analytics />
           
