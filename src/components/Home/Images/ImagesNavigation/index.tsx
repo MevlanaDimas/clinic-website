@@ -3,7 +3,6 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "../../../ui/button";
-import { MotionDiv } from '@/lib/motion';
 
 
 const ImagesNavigation = ({
@@ -24,18 +23,18 @@ const ImagesNavigation = ({
     if (!hasMultipleImages) return null;
 
     return (
-        <MotionDiv className="relative">
+        <>
             <Button
                 onClick={onPrev}
-                aria-label="Previous promo"
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 cursor-pointer border border-white/10"
+                aria-label="Previous news"
+                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 h-auto bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 cursor-pointer border border-white/10"
             >
                 <ChevronLeft size={24} />
             </Button>
             <Button
                 onClick={onNext}
-                aria-label="Next promo"
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 cursor-pointer border border-white/10"
+                aria-label="Next news"
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 h-auto bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 cursor-pointer border border-white/10"
             >
                 <ChevronRight size={24} />
             </Button>
@@ -49,7 +48,7 @@ const ImagesNavigation = ({
                     />
                 ))}
             </div>
-        </MotionDiv>
+        </>
     )
 };
 

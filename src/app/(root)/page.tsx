@@ -78,7 +78,7 @@ export default async function Home() {
   const promo = promoData.map(item => ({
     ...item,
     images: item.PromoImages ? [item.PromoImages] : []
-  }))
+  }));
 
   return (
     <main className="flex flex-col min-h-screen bg-white">
